@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevSecOps Workshop 2024</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <header>
+        <h1>Dashboard</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#githubInfo">GitHub Information</a></li>
+            <li><a href="#deploymentsChart">Deployments Chart</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="githubInfo">
+            <h2>About GitHub</h2>
+            <p>GitHub is a platform for version control and collaboration. It lets you and others work together on projects from anywhere. This platform uses Git, a distributed version control system, to track changes in your code and coordinate work on those files among multiple people.</p>
+            <p>With GitHub, you can manage and store your code, as well as track and control changes to your project. It provides a web-based graphical interface and desktop as well as mobile integration. GitHub offers both private repositories and free accounts, which are commonly used to host open-source software projects.</p>
+        </section>
+        <section id="deploymentsChart">
+            <h2>Number of Deployments</h2>
+            <canvas id="deploymentsChart" width="400" height="200"></canvas>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Dashboard</p>
+    </footer>
+    <button onclick="debugFunction()">Click me for debug</button>
+    <script>
+        function debugFunction() {
+            console.log("Debugging function triggered");
+            debugger; // This will pause the execution for debugging
+        }
+
+        // Data for the chart
+        const data = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Number of Deployments',
+                data: [3, 2, 1, 5, 4, 6, 7],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Config for the chart
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Render the chart
+        window.onload = function() {
+            const ctx = document.getElementById('deploymentsChart').getContext('2d');
+            new Chart(ctx, config);
+        };
+    </script>
+</body>
+</html>
