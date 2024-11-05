@@ -6,9 +6,68 @@
     <title>DevSecOps Workshop 2024</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* background-image: url('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'); */
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header, nav, main, footer {
+            background-color: rgba(255, 255, 255, 0.8);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        header h1, nav ul, main h2, footer p {
+            margin: 0;
+            padding: 0;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #searchResults div {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, World!</h1>
     <header>
         <h1>Dashboard</h1>
     </header>
@@ -16,10 +75,13 @@
         <ul>
             <li><a href="#githubInfo">GitHub Information</a></li>
             <li><a href="#deploymentsChart">Deployments Chart</a></li>
+            <li><a href="#githubNextOverview">GitHub Next Overview</a></li>
+            <li><a href="#githubNextProjects">GitHub Next Projects</a></li>
         </ul>
     </nav>
     <main>
         <input type="text" id="searchInput" placeholder="Search...">
+        <div id="searchResults"></div>
         <section id="githubInfo">
             <h2>About GitHub</h2>
             <p>GitHub is a platform for version control and collaboration. It lets you and others work together on projects from anywhere. This platform uses Git, a distributed version control system, to track changes in your code and coordinate work on those files among multiple people.</p>
@@ -27,7 +89,22 @@
         </section>
         <section id="deploymentsChart">
             <h2>Number of Deployments</h2>
-            <canvas id="deploymentsChart" width="400" height="200"></canvas>
+            <canvas id="deploymentsChartCanvas" width="400" height="200"></canvas>
+        </section>
+        <section id="githubNextOverview">
+            <h2>GitHub Next Overview</h2>
+            <p>GitHub Next is an initiative by GitHub to explore the future of software development. It focuses on innovative projects and research to push the boundaries of what is possible with GitHub and software development in general. The goal is to create tools and features that make developers more productive and enable new ways of working.</p>
+            <p>One of the key areas of focus for GitHub Next is the integration of artificial intelligence and machine learning into the development workflow. This includes tools that can help with code completion, bug detection, and even automated code generation. By leveraging the power of AI, GitHub Next aims to make software development faster, more efficient, and more accessible to everyone.</p>
+        </section>
+        <section id="githubNextProjects">
+            <h2>GitHub Next Projects</h2>
+            <p>GitHub Next has several ongoing projects that showcase the potential of future development tools. Some of the notable projects include:</p>
+            <ul>
+                <li><strong>Copilot:</strong> An AI-powered code completion tool that helps developers write code faster and with fewer errors. Copilot uses machine learning models trained on a vast amount of open-source code to provide intelligent suggestions as you type.</li>
+                <li><strong>CodeQL:</strong> A semantic code analysis engine that allows developers to query their codebase as if it were data. CodeQL can be used to find security vulnerabilities, code quality issues, and other bugs in a highly efficient manner.</li>
+                <li><strong>Actions:</strong> A powerful automation platform that allows developers to create custom workflows for their projects. With GitHub Actions, you can automate tasks such as building, testing, and deploying your code, all within the GitHub ecosystem.</li>
+            </ul>
+            <p>These projects are just a few examples of the innovative work being done by GitHub Next. By continuously exploring new ideas and technologies, GitHub Next is helping to shape the future of software development.</p>
         </section>
     </main>
     <footer>
@@ -44,10 +121,10 @@
         const data = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [{
-                label: 'Number of Deployments',
-                data: [3, 2, 1, 5, 4, 6, 7],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                label: 'Number of Tests',
+                data: [10, 15, 20, 25, 30, 35, 40],
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 1
             }]
         };
@@ -67,7 +144,7 @@
 
         // Render the chart
         window.onload = function() {
-            const ctx = document.getElementById('deploymentsChart').getContext('2d');
+            const ctx = document.getElementById('deploymentsChartCanvas').getContext('2d');
             new Chart(ctx, config);
         };
 
@@ -88,7 +165,15 @@
 
         document.getElementById('searchInput').addEventListener('input', function() {
             const results = idx.search(this.value);
-            console.log(results);
+            const searchResults = document.getElementById('searchResults');
+            searchResults.innerHTML = ''; // Clear previous results
+
+            results.forEach(result => {
+                const item = document.createElement('div');
+                const section = document.querySelectorAll('section')[result.ref];
+                item.innerHTML = `<h3>${section.querySelector('h2').innerText}</h3><p>${section.innerText}</p>`;
+                searchResults.appendChild(item);
+            });
         });
     </script>
 </body>
