@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevSecOps Workshop 2024</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
 </head>
 <body>
     <h1>Hello, World!</h1>
@@ -18,6 +19,7 @@
         </ul>
     </nav>
     <main>
+        <input type="text" id="searchInput" placeholder="Search...">
         <section id="githubInfo">
             <h2>About GitHub</h2>
             <p>GitHub is a platform for version control and collaboration. It lets you and others work together on projects from anywhere. This platform uses Git, a distributed version control system, to track changes in your code and coordinate work on those files among multiple people.</p>
@@ -68,6 +70,26 @@
             const ctx = document.getElementById('deploymentsChart').getContext('2d');
             new Chart(ctx, config);
         };
+
+        // Lunr.js search setup
+        const idx = lunr(function () {
+            this.field('title')
+            this.field('body')
+            this.ref('id')
+
+            document.querySelectorAll('section').forEach((section, index) => {
+                this.add({
+                    id: index,
+                    title: section.querySelector('h2').innerText,
+                    body: section.innerText
+                });
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const results = idx.search(this.value);
+            console.log(results);
+        });
     </script>
 </body>
 </html>
